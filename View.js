@@ -1,22 +1,52 @@
 const readlineSync = require('readline-sync');
-const Model = require('./model'); 
-// Wait for user's response.
-const {EOL} = require("os")
-let userName = readlineSync.question(`Выберите тему:${EOL}Логика${EOL}Музыка${EOL}Пословицы${EOL}`);
+const fs = require('fs');
+const { EOL } = require('os');
+const Model = require('./model');
 
-console.log('Hi ' + userName + '!');
+class View {
+  constructor(model) {
+    this.model = model;
+  }
 
-class View extends Model{
-    constructor(topic) {
-        super(topic);
+  run() {
+    const fingerDown = '👎';
+    const fingerUp = '👍';
+    let count = 0;
+    for (let i = 0; i < this.model.readAsk().length; i++) {
+      const ask = this.model.readAsk()[i];
+      let answer = this.model.readAnswers()[i + 1];
+      let userName = readlineSync.question(`${EOL}${ask}${EOL}Ответ: `);
+      if (typeof userName === 'string') {
+        userName = userName.toLowerCase();
+        answer = answer.toLowerCase();
+      }
+      if (userName === answer) {
+        console.log(`4ётко!${EOL}${fingerUp.repeat(20)}`);
+        count += 1;
+      } else {
+        console.log(
+          `мдааааааа, ващет правильно ${
+            this.model.readAnswers()[i + 1]
+          }${EOL}${fingerDown.repeat(20)}`
+        );
+      }
+      if (i === this.model.readAsk().length - 1) {
+        if (count >= 4) {
+          console.log(
+            `${EOL}Вы набрали ${count} правильных ответов! Обоссаться.`
+          );
+          console.log('Вот это ты вундеркиндер!');
+        } else {
+          console.log(
+            `${EOL}Вы набрали ${count} правильных ответов! Обоссаться.`
+          );
+          console.log(
+            'Мда, братишка, квизы не твоё. Надеюсь, код пишешь ты лучше :)'
+          );
+        }
+      }
     }
-
-    run() {
-    let userName = readlineSync.question(`Выберите тему:${EOL}Логика${EOL}Музыка${EOL}Пословицы${EOL}`);
-    
-    console.log(`Hi ${userName}`);
-    console.log('Hi ' + userName + '!');
-
-    }
+  }
 }
+
 module.exports = View;
