@@ -1,7 +1,7 @@
 const readlineSync = require('readline-sync');
-const fs = require('fs');
 const { EOL } = require('os');
-const Model = require('./model');
+// const fs = require('fs');
+// const Model = require('./model');
 
 class View {
   constructor(model) {
