@@ -17,3 +17,5 @@ class Model {
         return this.answers;
     }
 }
+
+module.exports = Model;
